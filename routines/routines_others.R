@@ -44,9 +44,9 @@ sdiscrepancy_min_tp <- Vectorize(function(eps){
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min <- Vectorize(function(lambda){
+unprior_mintp <- Vectorize(function(eps){
   # Absolute value using the symmetry of the discrepancy measure
-  lambda <- abs(lambda)
+  lambda <- tanh(eps)
   # Discrepancy
   disc <- function(par){
     # Integrand of discrepancy
