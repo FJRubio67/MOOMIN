@@ -60,7 +60,7 @@ unprior_min_tpn <- Vectorize(function(eps){
 # eps: real number, skewness parameter
 ################################################################################
 
-sdiscrepancy_min_logis <- Vectorize(function(eps){
+sdiscrepancy_min_tplogis <- Vectorize(function(eps){
   # Absolute value using the symmetry of the discrepancy measure
   sgn <- sign(eps)
   eps <- tanh(eps)
@@ -99,10 +99,10 @@ sdiscrepancy_min_logis <- Vectorize(function(eps){
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min_logis <- Vectorize(function(eps){
+unprior_min_tplogis <- Vectorize(function(eps){
   eps = abs(eps)
   # prior
-  prior <- grad(sdiscrepancy_min_logis, x = eps,  method.args=list(eps=1e-8) )
+  prior <- grad(sdiscrepancy_min_tplogis, x = eps,  method.args=list(eps=1e-8) )
   return(abs(prior))
 })
 
@@ -126,7 +126,7 @@ rlap = function(n,mu=0,sigma=1){
 # eps: real number, skewness parameter
 ################################################################################
 
-sdiscrepancy_min_lap <- Vectorize(function(eps){
+sdiscrepancy_min_tplap <- Vectorize(function(eps){
   # Absolute value using the symmetry of the discrepancy measure
   sgn <- sign(eps)
   eps <- tanh(eps)
@@ -165,10 +165,10 @@ sdiscrepancy_min_lap <- Vectorize(function(eps){
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min_lap <- Vectorize(function(eps){
+unprior_min_tplap <- Vectorize(function(eps){
   eps = abs(eps)
   # prior
-  prior <- grad(sdiscrepancy_min_lap, x = eps,  method.args=list(eps=1e-8) )
+  prior <- grad(sdiscrepancy_min_tplap, x = eps,  method.args=list(eps=1e-8) )
   return(abs(prior))
 })
 
