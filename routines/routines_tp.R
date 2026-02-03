@@ -1,3 +1,36 @@
+################################################################################
+# Minimum Discrepancy measure: normal(mu,sigma) vs twopiece normal
+# eps: real number, skewness parameter
+################################################################################
+
+discrepancy_min_tpn <- Vectorize(function(eps){
+  # Absolute value using the symmetry of the discrepancy measure
+  eps <- tanh(eps)
+  eps = abs(eps)
+  dtp <- Vectorize(function(x) dtp3(x,0,1,eps, param = "eps", FUN = dnorm))
+  # Discrepancy
+  disc <- function(par){
+    # Integrand
+    tempf <- Vectorize(function(x){
+      num <- dnorm(x,par[1],exp(par[2]))^2
+      den <- dnorm(x,par[1],exp(par[2])) + dtp(x)
+      out <- num/den
+      return(out)
+    })
+    # Integral
+    int <- integrate(tempf,-15,0)$value +  integrate(tempf,0,15)$value
+    return(int)
+  }
+  
+  # Initial value (mean and sd)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rnorm)
+  init <- c(mean(sim),sd(sim))
+  
+  # Minimum translated signed discrepancy
+  val <- nlminb(init,disc)$objective-0.5
+  return(abs(val))
+})
+
 
 ################################################################################
 # Signed Minimum Discrepancy measure: normal(mu,sigma) vs twopiece normal
@@ -25,7 +58,7 @@ sdiscrepancy_min_tpn <- Vectorize(function(eps){
   }
   
   # Initial value (mean and sd)
-  sim <- rtp3(1000,0,1,eps, param = "eps", FUN = rnorm)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rnorm)
   init <- c(mean(sim),sd(sim))
   
   # Minimum translated signed discrepancy
@@ -44,14 +77,50 @@ sdiscrepancy_min_tpn <- Vectorize(function(eps){
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
 unprior_min_tpn <- Vectorize(function(eps){
+  if(eps==0) prior = 0
+  if(eps!=0){
   eps = abs(eps)
   # prior
-  prior <- grad(sdiscrepancy_min_tpn, x = eps,  method.args=list(eps=1e-8) )
+  prior <- grad(sdiscrepancy_min_tpn, x = eps,  method.args=list(eps=1e-12) )
+  }
   return(abs(prior))
 })
 
 
 
+
+################################################################################
+# Minimum Discrepancy measure: logistic(mu,sigma) vs twopiece logistic
+# eps: real number, skewness parameter
+################################################################################
+
+discrepancy_min_tplogis <- Vectorize(function(eps){
+  # Absolute value using the symmetry of the discrepancy measure
+  eps <- tanh(eps)
+  eps = abs(eps)
+  dtp <- Vectorize(function(x) dtp3(x,0,1,eps, param = "eps", FUN = dlogis))
+  # Discrepancy
+  disc <- function(par){
+    # Integrand
+    tempf <- Vectorize(function(x){
+      num <- dlogis(x,par[1],exp(par[2]))^2
+      den <- dlogis(x,par[1],exp(par[2])) + dtp(x)
+      out <- num/den
+      return(out)
+    })
+    # Integral
+    int <- integrate(tempf,-15,0)$value +  integrate(tempf,0,15)$value
+    return(int)
+  }
+  
+  # Initial value (mean and sd)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlogis)
+  init <- c(mean(sim),sd(sim))
+  
+  # Minimum translated signed discrepancy
+  val <- nlminb(init,disc)$objective-0.5
+  return(abs(val))
+})
 
 
 
@@ -81,7 +150,7 @@ sdiscrepancy_min_tplogis <- Vectorize(function(eps){
   }
   
   # Initial value (mean and sd)
-  sim <- rtp3(1000,0,1,eps, param = "eps", FUN = rlogis)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlogis)
   init <- c(mean(sim),sd(sim))
   
   # Minimum translated signed discrepancy
@@ -126,6 +195,39 @@ rlap = function(n,mu=0,sigma=1){
 # eps: real number, skewness parameter
 ################################################################################
 
+discrepancy_min_tplap <- Vectorize(function(eps){
+  # Absolute value using the symmetry of the discrepancy measure
+  eps <- tanh(eps)
+  eps = abs(eps)
+  dtp <- Vectorize(function(x) dtp3(x,0,1,eps, param = "eps", FUN = dlap))
+  # Discrepancy
+  disc <- function(par){
+    # Integrand
+    tempf <- Vectorize(function(x){
+      num <- dlap(x,par[1],exp(par[2]))^2
+      den <- dlap(x,par[1],exp(par[2])) + dtp(x)
+      out <- num/den
+      return(out)
+    })
+    # Integral
+    int <- integrate(tempf,-60,0)$value +  integrate(tempf,0,60)$value
+    return(int)
+  }
+  
+  # Initial value (mean and sd)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlap)
+  init <- c(mean(sim),sd(sim))
+  
+  # Minimum translated signed discrepancy
+  val <- nlminb(init,disc)$objective-0.5
+  return(abs(val))
+})
+
+################################################################################
+# Signed Minimum Discrepancy measure: Laplace(mu,sigma) vs twopiece Laplace
+# eps: real number, skewness parameter
+################################################################################
+
 sdiscrepancy_min_tplap <- Vectorize(function(eps){
   # Absolute value using the symmetry of the discrepancy measure
   sgn <- sign(eps)
@@ -147,14 +249,13 @@ sdiscrepancy_min_tplap <- Vectorize(function(eps){
   }
   
   # Initial value (mean and sd)
-  sim <- rtp3(1000,0,1,eps, param = "eps", FUN = rlap)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlap)
   init <- c(mean(sim),sd(sim))
   
   # Minimum translated signed discrepancy
   val <- nlminb(init,disc)$objective-0.5
   return(sgn*abs(val))
 })
-
 
 ################################################################################
 # MOOMIN Prior on the skewness parameter of the twopiece Laplace
