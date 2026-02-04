@@ -18,7 +18,7 @@ discrepancy_min_tpn <- Vectorize(function(eps){
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-15,0)$value +  integrate(tempf,0,15)$value
+    int <- integrate(tempf,-12.5,0)$value +  integrate(tempf,0,12.5)$value
     return(int)
   }
   
@@ -46,7 +46,7 @@ unprior_min_tpn <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
-  prior <- grad(discrepancy_min_tpn, x = par,  method.args=list(eps=1e-8) )
+  prior <- grad(discrepancy_min_tpn, x = par,  method.args=list(eps=1e-5) )
   }
   return(abs(prior))
 })
