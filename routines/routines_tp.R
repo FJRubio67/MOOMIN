@@ -19,7 +19,7 @@ discrepancy_min_tpn <- Vectorize(function(eps){
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-12.5,0)$value +  integrate(tempf,0,12.5)$value
+    int <- integrate(tempf,-12,0)$value +  integrate(tempf,0,12)$value
     return(int)
   }
   
