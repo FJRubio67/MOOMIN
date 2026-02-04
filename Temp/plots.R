@@ -5,13 +5,13 @@ library(twopiece)
 library(numDeriv)
 
 # Routines
-source("C:/Users/Javier/Documents/GitHub/MOOMIN/routines/routines_tp.R")
-#source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
+#source("C:/Users/Javier/Documents/GitHub/MOOMIN/routines/routines_tp.R")
+source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 
 ################################################################################
 # Grid of points on (-3,0) for evaluations
 ################################################################################
-eps <- round(seq(-3,0,length.out = 30), digits = 2)
+eps <- round(seq(-3,0,length.out = 50), digits = 2)
 
 ################################################################################
 # Evaluations
