@@ -70,15 +70,24 @@ ptplap_pos <-  rev(ptplap[-length(ptplap)])
 #---------------------------
 # full grid and values
 #---------------------------
+
+# Grid
 eps_full  <- c(eps_neg, eps_pos)
 
+# twopiece normal
 disctpn_full <- c(disctpn_neg, disctpn_pos)
 sdisctpn_full <- c(sdisctpn_neg, sdisctpn_pos)
 ptpn_full <- c(ptpn_neg, ptpn_pos)
 
+# twopiece logistic
 disctplogis_full <- c(disctplogis_neg, disctplogis_pos)
 sdisctplogis_full <- c(sdisctplogis_neg, sdisctplogis_pos)
 ptplogis_full <- c(ptplogis_neg, ptplogis_pos)
+
+# twopiece Laplace
+disctplap_full <- c(disctplap_neg, disctplap_pos)
+sdisctplap_full <- c(sdisctplap_neg, sdisctplap_pos)
+ptplap_full <- c(ptplap_neg, ptplap_pos)
 
 ################################################################################
 # Plots
