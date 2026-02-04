@@ -74,7 +74,7 @@ discrepancy_min_tplogis <- Vectorize(function(eps){
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-75,0)$value +  integrate(tempf,0,75)$value
+    int <- integrate(tempf,-60,0)$value +  integrate(tempf,0,60)$value
     return(int)
   }
   
