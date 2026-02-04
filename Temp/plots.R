@@ -2,8 +2,8 @@ rm(list = ls())
 library(twopiece)
 library(numDeriv)
 
-#source("C:/Users/Javier/Documents/GitHub/MOOMIN/routines/routines_tp.R")
-source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
+source("C:/Users/Javier/Documents/GitHub/MOOMIN/routines/routines_tp.R")
+#source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 
 eps <- round(sort(c(0,seq(-3,3,length.out = 300))), digits = 2)
 
