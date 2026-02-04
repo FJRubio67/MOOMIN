@@ -36,17 +36,17 @@ discrepancy_min_tpn <- Vectorize(function(eps){
 # MOOMIN Prior on the skewness parameter of the twopiece normal
 # Based on assuming a uniform prior on the signed minimum discrepancy measure
 ################################################################################
-# lambda: real parameter
+# par: real parameter
 
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min_tpn <- Vectorize(function(eps){
-  if(eps==0) prior = 0
-  if(eps!=0){
-  eps = abs(eps)
+unprior_min_tpn <- Vectorize(function(par){
+  if(par==0) prior = 0
+  if(par!=0){
+    par = abs(par)
   # prior
-  prior <- grad(sdiscrepancy_min_tpn, x = eps,  method.args=list(eps=1e-12) )
+  prior <- grad(discrepancy_min_tpn, x = par,  method.args=list(eps=1e-8) )
   }
   return(abs(prior))
 })
@@ -92,17 +92,17 @@ discrepancy_min_tplogis <- Vectorize(function(eps){
 # MOOMIN Prior on the skewness parameter of the twopiece logistic
 # Based on assuming a uniform prior on the signed minimum discrepancy measure
 ################################################################################
-# lambda: real parameter
+# par: real parameter
 
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min_tplogis <- Vectorize(function(eps){
-  if(eps==0) prior = 0
-  if(eps!=0){
-    eps = abs(eps)
+unprior_min_tplogis <- Vectorize(function(par){
+  if(par==0) prior = 0
+  if(par!=0){
+    par = abs(par)
   # prior
-  prior <- grad(discrepancy_min_tplogis, x = eps,  method.args=list(eps=1e-8) )
+  prior <- grad(discrepancy_min_tplogis, x = par,  method.args=list(eps=1e-8) )
   }
   return(abs(prior))
 })
@@ -170,12 +170,12 @@ discrepancy_min_tplap <- Vectorize(function(eps){
 
 # Un-normalised prior
 # Based on numerical integration of the expression obtained in a Proposition
-unprior_min_tplap <- Vectorize(function(eps){
-  if(eps==0) prior = 0
-  if(eps!=0){
-    eps = abs(eps)
+unprior_min_tplap <- Vectorize(function(par){
+  if(par==0) prior = 0
+  if(par!=0){
+    par = abs(par)
   # prior
-  prior <- grad(sdiscrepancy_min_tplap, x = eps,  method.args=list(eps=1e-8) )
+  prior <- grad(sdiscrepancy_min_tplap, x = par,  method.args=list(eps=1e-8) )
   }
   return(abs(prior))
 })

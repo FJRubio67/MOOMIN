@@ -67,7 +67,9 @@ sdisctplap_pos <-  -rev(sdisctplap_neg[-length(sdisctplap_neg)])
 ptplap_neg <- ptplap
 ptplap_pos <-  rev(ptplap[-length(ptplap)])
 
+#---------------------------
 # full grid and values
+#---------------------------
 eps_full  <- c(eps_neg, eps_pos)
 
 disctpn_full <- c(disctpn_neg, disctpn_pos)
