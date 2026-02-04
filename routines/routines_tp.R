@@ -14,12 +14,12 @@ discrepancy_min_tpn <- Vectorize(function(eps){
     tempf <- Vectorize(function(x){
       num <- dnorm(x,par[1],exp(par[2]))^2
       den <- dnorm(x,par[1],exp(par[2])) + dtp(x)
-      if(den <= 1e-8) out <- 0
-      if(den > 1e-8) out <- num/den
+      if(den <= 1e-12) out <- 0
+      if(den > 1e-12) out <- num/den
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-12,0)$value +  integrate(tempf,0,12)$value
+    int <- integrate(tempf,-12.5,0)$value +  integrate(tempf,0,12.5)$value
     return(int)
   }
   
@@ -47,7 +47,9 @@ unprior_min_tpn <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
-  prior <- grad(discrepancy_min_tpn, x = par,  method.args=list(eps=1e-8) )
+  prior <- grad(discrepancy_min_tpn, x = par, 
+                method = "Richardson",
+                method.args = list(eps = 1e-6, d = 0.01, r = 6))
   }
   return(abs(prior))
 })
@@ -71,8 +73,8 @@ discrepancy_min_tplogis <- Vectorize(function(eps){
     tempf <- Vectorize(function(x){
       num <- dlogis(x,par[1],exp(par[2]))^2
       den <- dlogis(x,par[1],exp(par[2])) + dtp(x)
-      if(den <= 1e-8) out <- 0
-      if(den > 1e-8) out <- num/den
+      if(den <= 1e-12) out <- 0
+      if(den > 1e-12) out <- num/den
       return(out)
     })
     # Integral
