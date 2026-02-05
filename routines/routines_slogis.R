@@ -1,6 +1,6 @@
 
 ################################################################################
-# Minimum Discrepancy measure: normal(mu,sigma) vs skew logistic
+# Minimum Discrepancy measure: logistic(mu,sigma) vs skew logistic
 # lambda: real number, skewness parameter
 ################################################################################
 # lambda: real parameter
@@ -34,7 +34,7 @@ discrepancy_min_slogis <- Vectorize(function(lambda){
 })
 
 ################################################################################
-# Signed Minimum Discrepancy measure: normal(mu,sigma) vs skew normal
+# Signed Minimum Discrepancy measure: logistic(mu,sigma) vs skew logistic
 # lambda: real number, skewness parameter
 ################################################################################
 # lambda: real parameter
