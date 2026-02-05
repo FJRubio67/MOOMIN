@@ -221,7 +221,7 @@ unprior_min_tplap <- Vectorize(function(par){
 # PDF
 #------------------------------------------------------------------
 
-dsech <- Vectorize(function(x,mu,sigma,log = FALSE){
+dsech <- Vectorize(function(x,mu=0,sigma=1,log = FALSE){
   logden <-  -log(2) - log(sigma) - log( cosh( 0.5*pi*(x-mu)/sigma ) ) 
   val <- ifelse(log, logden, exp(logden)) 
   return(val)
@@ -231,7 +231,7 @@ dsech <- Vectorize(function(x,mu,sigma,log = FALSE){
 # CDF
 #------------------------------------------------------------------
 
-psech <- Vectorize(function(x,mu,sigma,log.p = FALSE){
+psech <- Vectorize(function(x,mu=0,sigma=1,log.p = FALSE){
   logcdf <-  log(2) - log(pi) + log( atan( exp( 0.5*pi*(x-mu)/sigma ) ) )
   val <- ifelse(log.p, logcdf, exp(logcdf))
   return(val)
@@ -241,7 +241,7 @@ psech <- Vectorize(function(x,mu,sigma,log.p = FALSE){
 # Quantile function
 #------------------------------------------------------------------
 
-qsech <- Vectorize(function(p,mu,sigma){
+qsech <- Vectorize(function(p,mu=0,sigma=1){
   val <- sigma*2*log( tan( 0.5*pi*p ) )/pi + mu
   return(val)
 })
@@ -250,7 +250,7 @@ qsech <- Vectorize(function(p,mu,sigma){
 # Random number generation
 #------------------------------------------------------------------
 
-rsech <- function(n,mu,sigma){
+rsech <- function(n,mu=0,sigma=1){
   u <- runif(n)
   val <-  sigma*2*log( tan( 0.5*pi*u ) )/pi + mu
   return(val)
@@ -282,11 +282,11 @@ discrepancy_min_tphs <- Vectorize(function(eps){
     # Integral
     # Integral with error handling
     int1 <- tryCatch(
-      integrate(tempf, -50, 0)$value,
+      integrate(tempf, -25, 0)$value,
       error = function(e) return(0)
     )
     int2 <- tryCatch(
-      integrate(tempf, 0, 50)$value,
+      integrate(tempf, 0, 25)$value,
       error = function(e) return(0)
     )
     int <- int1 + int2

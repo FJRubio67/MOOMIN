@@ -26,12 +26,12 @@ disctplogis <- discrepancy_min_tplogis(eps)
 ptplogis <- unprior_min_tplogis(eps)
 
 # twopiece Laplace
-disctplap <- discrepancy_min_tplap(eps)
-ptplap <- unprior_min_tplap(eps)
+# disctplap <- discrepancy_min_tplap(eps)
+# ptplap <- unprior_min_tplap(eps)
 
 # twopiece Hyperbolic Secant
 disctphs <- discrepancy_min_tphs(eps)
-ptplap <- unprior_min_tplap(eps)
+ptphs <- unprior_min_tphs(eps)
 
 ################################################################################
 # Data preparation
@@ -62,14 +62,24 @@ ptplogis_neg <- ptplogis
 ptplogis_pos <-  rev(ptplogis[-length(ptplogis)])
 
 # twopiece Laplace
-disctplap_neg <- disctplap
-disctplap_pos <-  rev(disctplap_neg[-length(disctplap_neg)])
+# disctplap_neg <- disctplap
+# disctplap_pos <-  rev(disctplap_neg[-length(disctplap_neg)])
+# 
+# sdisctplap_neg <- -disctplap
+# sdisctplap_pos <-  -rev(sdisctplap_neg[-length(sdisctplap_neg)])
+# 
+# ptplap_neg <- ptplap
+# ptplap_pos <-  rev(ptplap[-length(ptplap)])
 
-sdisctplap_neg <- -disctplap
-sdisctplap_pos <-  -rev(sdisctplap_neg[-length(sdisctplap_neg)])
+# twopiece hyperbolic secant
+disctphs_neg <- disctphs
+disctphs_pos <-  rev(disctphs_neg[-length(disctphs_neg)])
 
-ptplap_neg <- ptplap
-ptplap_pos <-  rev(ptplap[-length(ptplap)])
+sdisctphs_neg <- -disctphs
+sdisctphs_pos <-  -rev(sdisctphs_neg[-length(sdisctphs_neg)])
+
+ptphs_neg <- ptphs
+ptphs_pos <-  rev(ptphs[-length(ptphs)])
 
 #---------------------------
 # full grid and values
@@ -89,9 +99,14 @@ sdisctplogis_full <- c(sdisctplogis_neg, sdisctplogis_pos)
 ptplogis_full <- c(ptplogis_neg, ptplogis_pos)
 
 # twopiece Laplace
-disctplap_full <- c(disctplap_neg, disctplap_pos)
-sdisctplap_full <- c(sdisctplap_neg, sdisctplap_pos)
-ptplap_full <- c(ptplap_neg, ptplap_pos)
+# disctplap_full <- c(disctplap_neg, disctplap_pos)
+# sdisctplap_full <- c(sdisctplap_neg, sdisctplap_pos)
+# ptplap_full <- c(ptplap_neg, ptplap_pos)
+
+# twopiece hyperbolic secant
+disctphs_full <- c(disctphs_neg, disctphs_pos)
+sdisctphs_full <- c(sdisctphs_neg, sdisctphs_pos)
+ptphs_full <- c(ptphs_neg, ptphs_pos)
 
 ################################################################################
 # Plots
@@ -131,17 +146,33 @@ dev.off()
 
 
 # twopiece Laplace
-ind_tplap_bad <- detect_spikes_robust(eps_full,disctplap_full)$indices
-ind_tplap_bad2 <- c(detect_spikes_robust(eps_full,ptplap_full)$indices,which(ptplap_full>0.2))
-pdf("disc_min_tplap.pdf", width = 8, height = 6)
-plot(eps_full[-ind_tplap_bad],disctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
+# ind_tplap_bad <- detect_spikes_robust(eps_full,disctplap_full)$indices
+# ind_tplap_bad2 <- c(detect_spikes_robust(eps_full,ptplap_full)$indices,which(ptplap_full>0.2))
+# pdf("disc_min_tplap.pdf", width = 8, height = 6)
+# plot(eps_full[-ind_tplap_bad],disctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
+#      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)
+# dev.off()
+# pdf("sdisc_min_tplap.pdf", width = 8, height = 6)
+# plot(eps_full[-ind_tplap_bad],sdisctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
+#      xlab = expression(epsilon), ylab = "Signed discrepancy", cex.axis = 1.5, cex.lab = 1.5)
+# dev.off()
+# pdf("prior_min_tplap.pdf", width = 8, height = 6)
+# plot(eps_full[-ind_tplap_bad2],ptplap_full[-ind_tplap_bad2], lwd = 2, main = "two-piece Laplace", type = "l",
+#      xlab = expression(epsilon), ylab = "Prior", cex.axis = 1.5, cex.lab = 1.5)
+# dev.off()
+
+
+# twopiece hyperbolic secant
+ind_tphs_bad <- detect_spikes_robust(eps_full,ptphs_full, k = 6)$indices
+pdf("disc_min_tphs.pdf", width = 8, height = 6)
+plot(eps_full,disctphs_full, lwd = 2, main = "two-piece hyperbolic secant", type = "l",
      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
-pdf("sdisc_min_tplap.pdf", width = 8, height = 6)
-plot(eps_full[-ind_tplap_bad],sdisctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
+pdf("sdisc_min_tphs.pdf", width = 8, height = 6)
+plot(eps_full,sdisctphs_full, lwd = 2, main = "two-piece hyperbolic secant", type = "l",
      xlab = expression(epsilon), ylab = "Signed discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
-pdf("prior_min_tplap.pdf", width = 8, height = 6)
-plot(eps_full[-ind_tplap_bad2],ptplap_full[-ind_tplap_bad2], lwd = 2, main = "two-piece Laplace", type = "l",
+pdf("prior_min_tphs.pdf", width = 8, height = 6)
+plot(eps_full[-ind_tphs_bad],ptphs_full[-ind_tphs_bad], lwd = 2, main = "two-piece hyperbolic secant", type = "l",
      xlab = expression(epsilon), ylab = "Prior", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
