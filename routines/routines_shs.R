@@ -60,7 +60,7 @@ discrepancy_min_shs <- Vectorize(function(lambda){
         return(out)
       })
       # Integral (heuristic choice of integration range)
-      int <- integrate(tempf,-10,10)$value
+      int <- integrate(tempf,-5,5)$value
       return(int)
     }
     
@@ -98,7 +98,7 @@ sdiscrepancy_min_shs <- Vectorize(function(lambda){
         return(out)
       })
       # Integral
-      int <- integrate(tempf,-10,10)$value
+      int <- integrate(tempf,-5,5)$value
       return(int)
     }
     
@@ -136,7 +136,7 @@ unprior_min_shs <- Vectorize(function(lambda){
         return(out)
       })
       # Integral
-      int <- integrate(tempf,-10,10)$value
+      int <- integrate(tempf,-5,5)$value
       return(int)
     }
     
@@ -158,7 +158,7 @@ unprior_min_shs <- Vectorize(function(lambda){
       return(out)
     })
     # prior
-    prior <- abs(integrate(tempf2,-10,10)$value)
+    prior <- abs(integrate(tempf2,-5,5)$value)
   }
   return(prior)
   
