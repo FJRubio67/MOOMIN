@@ -1,41 +1,5 @@
 
 ################################################################################
-# Initial point for skew normal
-################################################################################
-# x: data set
-sn_start <- function(x) {
-  # sample moments
-  m <- mean(x)
-  s <- sd(x)
-  g1 <- mean(((x - m) / s)^3)  # sample skewness
-  
-  # constant
-  c <- (4 - pi) / 2
-  
-  if (abs(g1) < 1e-6) {
-    # essentially symmetric → normal
-    lambda <- 0
-    delta <- 0
-  } else {
-    # method-of-moments inversion
-    k <- (abs(g1) / c)^(2/3)
-    omega <- sign(g1) * sqrt(k / (1 + k))
-    delta <- omega * sqrt(pi / 2)
-    # numerical safeguard
-    delta <- max(min(delta, 0.995), -0.995)
-    lambda <- delta / sqrt(1 - delta^2)
-  }
-  
-  sigma <- s / sqrt(1 - (2 * delta^2) / pi)
-  mu <- m - sigma * delta * sqrt(2 / pi)
-  
-  out =  c(mu = mu, sigma = sigma, lambda = lambda)
-  
-  return(out)
-}
-
-
-################################################################################
 # Minimum Discrepancy measure: normal(mu,sigma) vs skew logistic
 # lambda: real number, skewness parameter
 ################################################################################
