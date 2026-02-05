@@ -11,7 +11,7 @@ source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 ################################################################################
 # Grid of points on (-3,0) for evaluations
 ################################################################################
-eps <- round(seq(-3,0,length.out = 30), digits = 2)
+eps <- round(seq(-3,0,length.out = 90), digits = 2)
 
 ################################################################################
 # Evaluations
@@ -93,8 +93,7 @@ ptplap_full <- c(ptplap_neg, ptplap_pos)
 # Plots
 ################################################################################
 
-ind_tpn <- c(1:length(eps_full))[-c(1,2,3,length(eps_full)-2,length(eps_full)-1,length(eps_full))]
-
+indbad_tpn <- c(which(ptpn_full>0.1),which(abs(eps_full) == 2.87))
 # twopiece normal
 pdf("disc_min_tpn.pdf", width = 8, height = 6)
 plot(eps_full,disctpn_full, lwd = 2, main = "two-piece normal", type = "l",
@@ -105,13 +104,14 @@ plot(eps_full,sdisctpn_full, lwd = 2, main = "two-piece normal", type = "l",
      xlab = expression(epsilon), ylab = "Signed discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 pdf("prior_min_tpn.pdf", width = 8, height = 6)
-plot(eps_full[ind_tpn],ptpn_full[ind_tpn], lwd = 2, main = "two-piece normal", type = "l",
+plot(eps_full[-indbad_tpn],ptpn_full[-indbad_tpn], lwd = 2, main = "two-piece normal", type = "l",
      xlab = expression(epsilon), ylab = "Prior", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 
 
 
 # twopiece logistic
+ind_tplogis_bad <- which(ptplogis_full>0.1)
 pdf("disc_min_tplogis.pdf", width = 8, height = 6)
 plot(eps_full,disctplogis_full, lwd = 2, main = "two-piece logistic", type = "l",
      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)
@@ -121,7 +121,7 @@ plot(eps_full,sdisctplogis_full, lwd = 2, main = "two-piece logistic", type = "l
      xlab = expression(epsilon), ylab = "Signed discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 pdf("prior_min_tplogis.pdf", width = 8, height = 6)
-plot(eps_full,ptplogis_full, lwd = 2, main = "two-piece logistic", type = "l",
+plot(eps_full[-ind_tplogis_bad],ptplogis_full[-ind_tplogis_bad], lwd = 2, main = "two-piece logistic", type = "l",
      xlab = expression(epsilon), ylab = "Prior", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 

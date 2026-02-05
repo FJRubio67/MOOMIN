@@ -47,10 +47,12 @@ unprior_min_tpn <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
-  prior <- grad(discrepancy_min_tpn, x = par, 
-                method = "Richardson",
-                method.args = list(eps = 1e-6, d = 0.01, r = 6))
-  }
+ # prior <- grad(discrepancy_min_tpn, x = par, 
+#                method = "Richardson",
+#                method.args = list(eps = 1e-6, d = 0.01, r = 6))
+  
+prior <- fderiv(discrepancy_min_tpn, x = par)
+}
   return(abs(prior))
 })
 
@@ -106,8 +108,12 @@ unprior_min_tplogis <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
-  prior <- grad(discrepancy_min_tplogis, x = par,  method.args=list(eps=1e-8) )
-  }
+ # prior <- grad(discrepancy_min_tplogis, x = par, 
+#                method = "Richardson",
+#                method.args = list(eps = 1e-6, d = 0.01, r = 6))
+    prior <- fderiv(discrepancy_min_tplogis, x = par)
+    
+     }
   return(abs(prior))
 })
 
