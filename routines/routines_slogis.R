@@ -56,14 +56,12 @@ discrepancy_min_slogis <- Vectorize(function(lambda){
         return(out)
       })
       # Integral (heuristic choice of integration range)
-      int <- integrate(tempf,-5,7.5)$value
+      int <- integrate(tempf,-10,10)$value
       return(int)
     }
     
     # Initial value (mean and sd)
-    my_dp <- c(xi = 0, omega = 1, alpha = lambda)
-    my_cp <- dp2cp(my_dp, family = "SN")
-    init <- c(my_cp[1],log(my_cp[2]))
+    init <- c(0.5,0)
     
     # Minimum translated discrepancy
     val <- optim(init,disc)$value-0.5
