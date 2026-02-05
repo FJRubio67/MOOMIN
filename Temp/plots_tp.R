@@ -3,15 +3,16 @@ rm(list = ls())
 # Required packages
 library(twopiece)
 library(numDeriv)
+library(pracma)
 
 # Routines
 #source("C:/Users/Javier/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 
 ################################################################################
-# Grid of points on (-3,0) for evaluations
+# Grid of points on (-2.5,0) for evaluations
 ################################################################################
-eps <- round(seq(-3,0,length.out = 90), digits = 2)
+eps <- as.numeric(round(seq(-2.5,0,length.out = 100), digits = 2))
 
 ################################################################################
 # Evaluations
@@ -93,7 +94,7 @@ ptplap_full <- c(ptplap_neg, ptplap_pos)
 # Plots
 ################################################################################
 
-indbad_tpn <- c(which(ptpn_full>0.1),which(abs(eps_full) == 2.87))
+indbad_tpn <-detect_spikes_robust(eps_full,ptpn_full)$indices
 # twopiece normal
 pdf("disc_min_tpn.pdf", width = 8, height = 6)
 plot(eps_full,disctpn_full, lwd = 2, main = "two-piece normal", type = "l",
@@ -111,7 +112,7 @@ dev.off()
 
 
 # twopiece logistic
-ind_tplogis_bad <- which(ptplogis_full>0.1)
+ind_tplogis_bad <- detect_spikes_robust(eps_full,ptplogis_full)$indices
 pdf("disc_min_tplogis.pdf", width = 8, height = 6)
 plot(eps_full,disctplogis_full, lwd = 2, main = "two-piece logistic", type = "l",
      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)

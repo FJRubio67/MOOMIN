@@ -24,6 +24,7 @@ discrepancy_min_tpn <- Vectorize(function(eps){
   }
   
   # Initial value (mean and sd)
+  set.seed(123)
   sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rnorm)
   init <- c(mean(sim),sd(sim))
   
@@ -51,7 +52,7 @@ unprior_min_tpn <- Vectorize(function(par){
 #                method = "Richardson",
 #                method.args = list(eps = 1e-6, d = 0.01, r = 6))
   
-prior <- fderiv(discrepancy_min_tpn, x = par)
+prior <- fderiv(discrepancy_min_tpn, x = par, h = 1e-12)
 }
   return(abs(prior))
 })
@@ -75,19 +76,31 @@ discrepancy_min_tplogis <- Vectorize(function(eps){
     tempf <- Vectorize(function(x){
       num <- dlogis(x,par[1],exp(par[2]))^2
       den <- dlogis(x,par[1],exp(par[2])) + dtp(x)
-      if(den <= 1e-12) out <- 0
-      if(den > 1e-12) out <- num/den
+      out <- ifelse(den > 1e-15, num / den, 0)
+      out[!is.finite(out)] <- 0
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-75,0)$value +  integrate(tempf,0,75)$value
+#    int <- integrate(tempf,-75,0)$value +  integrate(tempf,0,75)$value
+    # Integral with error handling
+    int1 <- tryCatch(
+      integrate(tempf, -75, 0)$value,
+      error = function(e) return(0)
+    )
+    int2 <- tryCatch(
+      integrate(tempf, 0, 75)$value,
+      error = function(e) return(0)
+    )
+    int <- int1 + int2
     return(int)
   }
-  
+
+
   # Initial value (mean and sd)
+  set.seed(123)
   sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlogis)
   init <- c(mean(sim),sd(sim))
-  
+
   # Minimum translated signed discrepancy
   val <- optim(init,disc)$value-0.5
   return(abs(val))
@@ -111,7 +124,7 @@ unprior_min_tplogis <- Vectorize(function(par){
  # prior <- grad(discrepancy_min_tplogis, x = par, 
 #                method = "Richardson",
 #                method.args = list(eps = 1e-6, d = 0.01, r = 6))
-    prior <- fderiv(discrepancy_min_tplogis, x = par)
+    prior <- fderiv(discrepancy_min_tplogis, x = par, h = 1e-8)
     
      }
   return(abs(prior))
@@ -195,6 +208,29 @@ unprior_min_tplap <- Vectorize(function(par){
 
 
 
+################################################################################
+# Function to detect spikes
+################################################################################
 
+detect_spikes_robust <- function(x, y, k = 3) {
+  # First derivative
+  dy <- diff(y) / diff(x)
+  
+  # Second derivative (curvature)
+  d2y <- diff(dy) / diff(x[-1])
+  
+  # Detect high curvature points
+  threshold <- median(abs(d2y)) + k * mad(abs(d2y))
+  spike_indices <- which(abs(d2y) > threshold) + 1
+  
+  # Filter out the zero point if needed
+  spike_indices <- spike_indices[abs(x[spike_indices]) > 0.1]
+  
+  return(list(
+    indices = spike_indices,
+    x_values = x[spike_indices],
+    y_values = y[spike_indices]
+  ))
+}
 
 
