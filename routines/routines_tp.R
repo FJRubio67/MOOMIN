@@ -173,11 +173,11 @@ discrepancy_min_tplap <- Vectorize(function(eps){
     # Integral
     # Integral with error handling
     int1 <- tryCatch(
-      integrate(tempf, -60, 0)$value,
+      integrate(tempf, -50, 0)$value,
       error = function(e) return(0)
     )
     int2 <- tryCatch(
-      integrate(tempf, 0, 60)$value,
+      integrate(tempf, 0, 50)$value,
       error = function(e) return(0)
     )
     int <- int1 + int2
@@ -199,7 +199,7 @@ discrepancy_min_tplap <- Vectorize(function(eps){
 # MOOMIN Prior on the skewness parameter of the twopiece Laplace
 # Based on assuming a uniform prior on the signed minimum discrepancy measure
 ################################################################################
-# lambda: real parameter
+# par: real parameter
 
 
 # Un-normalised prior
@@ -209,8 +209,116 @@ unprior_min_tplap <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
- # prior <- grad(discrepancy_min_tplap, x = par )
- prior <- fderiv(discrepancy_min_tplap, x = par, h = 1e-12)
+  prior <- grad(discrepancy_min_tplap, x = par, heps = 1e-6 )
+# prior <- fderiv(discrepancy_min_tplap, x = par, h = 1e-3)
+  }
+  return(abs(prior))
+})
+
+
+
+#------------------------------------------------------------------
+# PDF
+#------------------------------------------------------------------
+
+dsech <- Vectorize(function(x,mu,sigma,log = FALSE){
+  logden <-  -log(2) - log(sigma) - log( cosh( 0.5*pi*(x-mu)/sigma ) ) 
+  val <- ifelse(log, logden, exp(logden)) 
+  return(val)
+})
+
+#------------------------------------------------------------------
+# CDF
+#------------------------------------------------------------------
+
+psech <- Vectorize(function(x,mu,sigma,log.p = FALSE){
+  logcdf <-  log(2) - log(pi) + log( atan( exp( 0.5*pi*(x-mu)/sigma ) ) )
+  val <- ifelse(log.p, logcdf, exp(logcdf))
+  return(val)
+})
+
+#------------------------------------------------------------------
+# Quantile function
+#------------------------------------------------------------------
+
+qsech <- Vectorize(function(p,mu,sigma){
+  val <- sigma*2*log( tan( 0.5*pi*p ) )/pi + mu
+  return(val)
+})
+
+#------------------------------------------------------------------
+# Random number generation
+#------------------------------------------------------------------
+
+rsech <- function(n,mu,sigma){
+  u <- runif(n)
+  val <-  sigma*2*log( tan( 0.5*pi*u ) )/pi + mu
+  return(val)
+}
+
+
+
+################################################################################
+# Signed Minimum Discrepancy measure: Laplace(mu,sigma) vs twopiece hyperbolic secant
+# eps: real number, skewness parameter
+################################################################################
+
+
+discrepancy_min_tphs <- Vectorize(function(eps){
+  # Absolute value using the symmetry of the discrepancy measure
+  eps <- tanh(eps)
+  eps = abs(eps)
+  dtp <- Vectorize(function(x) dtp3(x,0,1,eps, param = "eps", FUN = dsech))
+  # Discrepancy
+  disc <- function(par){
+    # Integrand
+    tempf <- Vectorize(function(x){
+      num <- dsech(x,par[1],exp(par[2]))^2
+      den <- dsech(x,par[1],exp(par[2])) + dtp(x)
+      out <- ifelse(den > 1e-15, num / den, 0)
+      out[!is.finite(out)] <- 0
+      return(out)
+    })
+    # Integral
+    # Integral with error handling
+    int1 <- tryCatch(
+      integrate(tempf, -50, 0)$value,
+      error = function(e) return(0)
+    )
+    int2 <- tryCatch(
+      integrate(tempf, 0, 50)$value,
+      error = function(e) return(0)
+    )
+    int <- int1 + int2
+    return(int)
+  }
+  
+  # Initial value (mean and sd)
+  set.seed(123)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rsech)
+  init <- c(mean(sim),sd(sim))
+  
+  # Minimum translated signed discrepancy
+  val <- optim(init,disc)$value-0.5
+  return(abs(val))
+})
+
+
+################################################################################
+# MOOMIN Prior on the skewness parameter of the twopiece hyperbolic secant
+# Based on assuming a uniform prior on the signed minimum discrepancy measure
+################################################################################
+# par: real parameter
+
+
+# Un-normalised prior
+# Based on numerical integration of the expression obtained in a Proposition
+unprior_min_tphs <- Vectorize(function(par){
+  if(par==0) prior = 0
+  if(par!=0){
+    par = abs(par)
+    # prior
+    prior <- fderiv(discrepancy_min_tphs, x = par, h = 1e-8)
   }
   return(abs(prior))
 })

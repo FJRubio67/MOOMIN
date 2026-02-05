@@ -13,7 +13,6 @@ source("~/Documents/GitHub/MOOMIN/routines/routines_tp.R")
 # Grid of points on (-2.5,0) for evaluations
 ################################################################################
 eps <- as.numeric(round(seq(-2.5,0,length.out = 100), digits = 2))
-
 ################################################################################
 # Evaluations
 ################################################################################
@@ -28,6 +27,10 @@ ptplogis <- unprior_min_tplogis(eps)
 
 # twopiece Laplace
 disctplap <- discrepancy_min_tplap(eps)
+ptplap <- unprior_min_tplap(eps)
+
+# twopiece Hyperbolic Secant
+disctphs <- discrepancy_min_tphs(eps)
 ptplap <- unprior_min_tplap(eps)
 
 ################################################################################
@@ -129,7 +132,7 @@ dev.off()
 
 # twopiece Laplace
 ind_tplap_bad <- detect_spikes_robust(eps_full,disctplap_full)$indices
-ind_tplap_bad2 <- detect_spikes_robust(eps_full,ptplap_full)$indices
+ind_tplap_bad2 <- c(detect_spikes_robust(eps_full,ptplap_full)$indices,which(ptplap_full>0.2))
 pdf("disc_min_tplap.pdf", width = 8, height = 6)
 plot(eps_full[-ind_tplap_bad],disctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)
