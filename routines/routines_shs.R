@@ -106,7 +106,7 @@ sdiscrepancy_min_shs <- Vectorize(function(lambda){
     init <- c(0.5,0)
     
     # Minimum translated signed discrepancy
-    val <- nlminb(init,disc)$objective-0.5
+    val <- optim(init,disc)$value-0.5
   }
   return(sgn*abs(val))
 })
