@@ -99,9 +99,7 @@ sdiscrepancy_min_slogis <- Vectorize(function(lambda){
     }
     
     # Initial value (mean and sd)
-    my_dp <- c(xi = 0, omega = 1, alpha = lambda)
-    my_cp <- dp2cp(my_dp, family = "SN")
-    init <- c(my_cp[1],log(my_cp[2]))
+    init <- c(0.5,0)
     
     # Minimum translated signed discrepancy
     val <- nlminb(init,disc)$objective-0.5
@@ -139,9 +137,7 @@ unprior_min_slogis <- Vectorize(function(lambda){
     }
     
     # Initial value (mean and sd)
-    my_dp <- c(xi = 0, omega = 1, alpha = lambda)
-    my_cp <- dp2cp(my_dp, family = "SN")
-    init <- c(my_cp[1],log(my_cp[2]))
+    init <- c(0.5,0)
     
     # Minimum discrepancy
     OPT <- optim(init,disc)
