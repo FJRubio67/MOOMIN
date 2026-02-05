@@ -128,15 +128,17 @@ dev.off()
 
 
 # twopiece Laplace
+ind_tplap_bad <- detect_spikes_robust(eps_full,disctplap_full)$indices
+ind_tplap_bad2 <- detect_spikes_robust(eps_full,ptplap_full)$indices
 pdf("disc_min_tplap.pdf", width = 8, height = 6)
-plot(eps,disctplap, lwd = 2, main = "two-piece Laplace", type = "l",
+plot(eps_full[-ind_tplap_bad],disctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
      xlab = expression(epsilon), ylab = "Discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 pdf("sdisc_min_tplap.pdf", width = 8, height = 6)
-plot(eps,stplap, lwd = 2, main = "two-piece Laplace", type = "l",
+plot(eps_full[-ind_tplap_bad],sdisctplap_full[-ind_tplap_bad], lwd = 2, main = "two-piece Laplace", type = "l",
      xlab = expression(epsilon), ylab = "Signed discrepancy", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()
 pdf("prior_min_tplap.pdf", width = 8, height = 6)
-plot(eps,ptplap, lwd = 2, main = "two-piece Laplace", type = "l",
+plot(eps_full[-ind_tplap_bad2],ptplap_full[-ind_tplap_bad2], lwd = 2, main = "two-piece Laplace", type = "l",
      xlab = expression(epsilon), ylab = "Prior", cex.axis = 1.5, cex.lab = 1.5)
 dev.off()

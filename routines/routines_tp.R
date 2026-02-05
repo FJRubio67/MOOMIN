@@ -98,7 +98,7 @@ discrepancy_min_tplogis <- Vectorize(function(eps){
 
   # Initial value (mean and sd)
   set.seed(123)
-  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlogis)
+  sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlap)
   init <- c(mean(sim),sd(sim))
 
   # Minimum translated signed discrepancy
@@ -166,21 +166,31 @@ discrepancy_min_tplap <- Vectorize(function(eps){
     tempf <- Vectorize(function(x){
       num <- dlap(x,par[1],exp(par[2]))^2
       den <- dlap(x,par[1],exp(par[2])) + dtp(x)
-      if(den <= 1e-12) out <- 0
-      if(den > 1e-12) out <- num/den
+      out <- ifelse(den > 1e-15, num / den, 0)
+      out[!is.finite(out)] <- 0
       return(out)
     })
     # Integral
-    int <- integrate(tempf,-60,0)$value +  integrate(tempf,0,60)$value
+    # Integral with error handling
+    int1 <- tryCatch(
+      integrate(tempf, -60, 0)$value,
+      error = function(e) return(0)
+    )
+    int2 <- tryCatch(
+      integrate(tempf, 0, 60)$value,
+      error = function(e) return(0)
+    )
+    int <- int1 + int2
     return(int)
   }
   
   # Initial value (mean and sd)
+  set.seed(123)
   sim <- rtp3(10000,0,1,eps, param = "eps", FUN = rlap)
   init <- c(mean(sim),sd(sim))
   
   # Minimum translated signed discrepancy
-  val <- nlminb(init,disc)$objective-0.5
+  val <- optim(init,disc)$value-0.5
   return(abs(val))
 })
 
@@ -199,7 +209,8 @@ unprior_min_tplap <- Vectorize(function(par){
   if(par!=0){
     par = abs(par)
   # prior
-  prior <- grad(sdiscrepancy_min_tplap, x = par,  method.args=list(eps=1e-8) )
+ # prior <- grad(discrepancy_min_tplap, x = par )
+ prior <- fderiv(discrepancy_min_tplap, x = par, h = 1e-12)
   }
   return(abs(prior))
 })
