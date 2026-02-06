@@ -1,5 +1,30 @@
 
 ################################################################################
+# Discrepancy measure: exp(lambda) vs weibull(lambda,nu)
+# nu: real number, log(shape)
+################################################################################
+# lambda: real parameter
+
+discrepancy_w <- Vectorize(function(nu){
+  # Absolute value using the symmetry of the discrepancy measure
+  if(exp(nu) == 1 ) val = 0
+  if(exp(nu) != 1){
+    # Discrepancy
+    # Integrand
+    tempf <- Vectorize(function(x){
+      num <- dexp(x, rate = 1)^2
+      den <- dexp(x, rate = 1) + dweibull(x, scale = 1, shape = exp(nu))
+      out <- num/den
+      return(out)
+    })
+    # Integral (heuristic choice of integration range)
+    val <- integrate(tempf,0,5)$value - 0.5
+    
+  }
+  return(val)
+})
+
+################################################################################
 # Minimum Discrepancy measure: exp(lambda) vs weibull(lambda,nu)
 # nu: real number, log(shape)
 ################################################################################
