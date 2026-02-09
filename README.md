@@ -1,6 +1,9 @@
 # MOOMIN
 Moment-Objective Minimum-Discrepancy (MOOMIN) Prior
 
+![MOOMIN](https://github.com/user-attachments/assets/b2b65d4b-1723-4340-ae8a-5486aacc64e2)
+
+
 This repository contains the R code used for the real data application in the manuscript:
 
 > Rubio, F.J. (2026). An objective non-local prior for skew-symmetric models.
