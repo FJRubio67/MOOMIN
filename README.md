@@ -8,10 +8,9 @@ This repository contains the R code used to obtain the results in the manuscript
 
 > Rubio, F.J. (2026). An objective non-local prior for skew-symmetric models.
 
-1. `routines_sn.R` : This code contains the routines required for the real data application and simulations.
-2. `Application` : This folder contains the R code and R Markdown code and html to reproduce the real data application.
-3. `Plots` : This folder contains the R codes to reproduce all the plots in the manuscript and appendix.
-4. `routines` : This folder contains all routines required to reproduce all calculations in the manuscript and appendix.
+1. `routines` : This folder contains all routines required to reproduce all calculations in the manuscript and appendix. In particular, the code `routines_sn.R` contains the routines required for the real data application and simulations.
+2. `Plots` : This folder contains the R codes to reproduce all the plots in the manuscript and appendix.
+3. `Application` : This folder contains the R code and R Markdown code and html to reproduce the real data application.
 
 See also:
 - [The effect of the shape (skewness) parameter in skew-symmetric models](https://rpubs.com/FJRubio/DTVMINSS)
