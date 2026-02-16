@@ -36,8 +36,8 @@ library(knitr)
 library(kableExtra)
 
 # Routines
-source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
-#source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+#source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
 
 
 #  Data: BMI Australian athletes
@@ -50,8 +50,14 @@ hist(data, breaks = 15, xlab = "BMI", ylab = "Density", probability = TRUE,
      cex.lab = 1.5, cex.axis = 1.5, main = "Full data") 
 box()
 
+# Boxplot
 boxplot(data, ylab = "BMI",
      cex.lab = 1.5, cex.axis = 1.5, main = "Full data")
+
+# Q-Q plot 
+qqnorm(data)
+qqline(data, col = "red", lwd = 2)
+
 ```
 
 ## Priors
@@ -148,12 +154,18 @@ datao <- data[!Rob.Out.detect(data)]
 
 length(datao)
 
+# Histogram
 hist(datao, breaks = 15, xlab = "BMI", ylab = "Density", probability = TRUE,
      cex.lab = 1.5, cex.axis = 1.5, main = "Removing outlier") 
 box()
 
-boxplot(data, ylab = "BMI",
+# Boxplot
+boxplot(datao, ylab = "BMI",
      cex.lab = 1.5, cex.axis = 1.5, main = "Removing outlier")
+
+# Q-Q plot 
+qqnorm(datao)
+qqline(datao, col = "red", lwd = 2)
 ```
 
 

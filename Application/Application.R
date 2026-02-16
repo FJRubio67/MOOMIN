@@ -1,8 +1,8 @@
-## ----setup, include=FALSE------------------------------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
 
-## ------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------
 rm(list=ls())
 
 # Required packages
@@ -15,8 +15,8 @@ library(knitr)
 library(kableExtra)
 
 # Routines
-source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
-#source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+#source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
 
 
 #  Data: BMI Australian athletes
@@ -29,11 +29,17 @@ hist(data, breaks = 15, xlab = "BMI", ylab = "Density", probability = TRUE,
      cex.lab = 1.5, cex.axis = 1.5, main = "Full data") 
 box()
 
+# Boxplot
 boxplot(data, ylab = "BMI",
      cex.lab = 1.5, cex.axis = 1.5, main = "Full data")
 
+# Q-Q plot 
+qqnorm(data)
+qqline(data, col = "red", lwd = 2)
 
-## ------------------------------------------------------------------------------------------------
+
+
+## -----------------------------------------------------------------------------------------------------------------------------
 curve(tprior_app_min, -20, 20, lwd = 2, n = 500, xlab = expression(lambda), ylab = "Density",
       cex.lab = 1.5, cex.axis = 1.5, ylim = c(0,0.2))
 curve(d_mom, -20, 20, add = TRUE, col="red", lwd = 2, n = 500, lty = 2)
@@ -41,7 +47,7 @@ curve(da_jeff,-20,20, add=TRUE, col="blue", lwd = 2, n = 500, lty = 3)
 legend( "topright", legend = c("MOOMIN", "DIMOM", "Jeffreys"), lwd = 2, col = c("black","red","blue"), lty = c(1,2,3))
 
 
-## ------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------
 # Normality tests
 NormTest <- snNormalityTest(data, method = "ILA")
 
@@ -86,7 +92,7 @@ kable(EST, digits = 3, format = "html") %>%
   column_spec(1:ncol(EST), extra_css = "padding-left: 15px; padding-right: 15px;")
 
 
-## ------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------
 ##################################################################################################
 # Robust outlier detection
 # Location estimated with the median
@@ -122,15 +128,21 @@ datao <- data[!Rob.Out.detect(data)]
 
 length(datao)
 
+# Histogram
 hist(datao, breaks = 15, xlab = "BMI", ylab = "Density", probability = TRUE,
      cex.lab = 1.5, cex.axis = 1.5, main = "Removing outlier") 
 box()
 
-boxplot(data, ylab = "BMI",
+# Boxplot
+boxplot(datao, ylab = "BMI",
      cex.lab = 1.5, cex.axis = 1.5, main = "Removing outlier")
 
+# Q-Q plot 
+qqnorm(datao)
+qqline(datao, col = "red", lwd = 2)
 
-## ------------------------------------------------------------------------------------------------
+
+## -----------------------------------------------------------------------------------------------------------------------------
 # Normality tests
 NormTestO <- snNormalityTest(datao, method = "ILA")
 
