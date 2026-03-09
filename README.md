@@ -1,4 +1,4 @@
-# MOOMIN
+# An objective non-local prior for skew-symmetric models
 Moment-Objective Minimum-Discrepancy (MOOMIN) Prior
 
 ![MOOMIN](https://github.com/user-attachments/assets/b2b65d4b-1723-4340-ae8a-5486aacc64e2)
