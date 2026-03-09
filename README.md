@@ -6,7 +6,7 @@ Moment-Objective Minimum-Discrepancy (MOOMIN) Prior
 
 This repository contains the R code used to obtain the results in the manuscript:
 
-> Rubio, F.J. (2026+). An objective non-local prior for skew-symmetric models. *Statistics and Probability Letters*, in press.
+> Rubio, F.J. (2026+). An objective non-local prior for skew-symmetric models. *Statistics & Probability Letters*, in press.
 
 1. `routines` : This folder contains all routines required to reproduce all calculations in the manuscript and appendix. In particular, the code `routines_sn.R` contains the routines required for the real data application and simulations.
 2. `Plots` : This folder contains the R codes to reproduce all the plots in the manuscript and appendix.
