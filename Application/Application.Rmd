@@ -36,8 +36,8 @@ library(knitr)
 library(kableExtra)
 
 # Routines
-#source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
-source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+source("~/Documents/GitHub/OMOM/R/routines/routines_sn.R")
+#source("C:/Users/Javier/Documents/GitHub/OMOM/R/routines/routines_sn.R")
 
 
 #  Data: BMI Australian athletes
