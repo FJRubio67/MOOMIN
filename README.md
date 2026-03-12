@@ -13,6 +13,7 @@ This repository contains the R code used to obtain the results in the manuscript
 3. `Application` : This folder contains the R code and R Markdown code and html to reproduce the real data application.
 
 See also:
+- [Objective non-local priors for skew-symmetric models](https://rpubs.com/FJRubio/MOOMIN)
 - [The effect of the shape (skewness) parameter in skew-symmetric models](https://rpubs.com/FJRubio/DTVMINSS)
 - [The effect of the shape (skewness) parameter in skew-symmetric models, Part II](https://rpubs.com/FJRubio/DiscMinSS)
 - [The effect of the shape (skewness) parameter in skew-symmetric models, Part III](https://rpubs.com/FJRubio/DivMinLC)
