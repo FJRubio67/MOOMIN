@@ -1,6 +1,4 @@
-# MOOMIN
-
-## Moment-Objective Minimum-Discrepancy (MOOMIN) Prior
+# Moment-Objective Minimum-Discrepancy (MOOMIN) Prior
 
 <div align="center">
 <img width="400" alt="MOOMIN" src="https://github.com/user-attachments/assets/b2b65d4b-1723-4340-ae8a-5486aacc64e2" />
